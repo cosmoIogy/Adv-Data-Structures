@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 class Node {
     public Node next;
     public String data;
@@ -31,19 +34,17 @@ class LinkedList {
         }
     }
 
-    public int search(String data){
+    public boolean search(String data){
         Node current = head;
-        int position = 0;
 
         while(current != null && !(current.data.equals(data))){
             current = current.next;
-            position++;
         }
         if(current != null){
-            return position;
+            return true;
         }
         else{
-            return -1;
+            return false;
         }
     }
 
@@ -79,6 +80,20 @@ class LinkedList {
         }
     }
     
+    public String findAllWith(char x) {
+    Node current = head;
+    String str = "";
+
+    while (current != null) {
+        if (current.data == x) {
+            str.add(current);
+        }
+        current = current.next;
+    }
+
+    return str; // could be empty if nothing found
+}
+
     public static void main(String[] args) {
         LinkedList bailie = new LinkedList();
 
