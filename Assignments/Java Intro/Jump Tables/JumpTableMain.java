@@ -3,12 +3,10 @@ import java.nio.file.*;
 import java.util.*;
 
 public class JumpTableMain {
-    @FunctionalInterface
     interface StateEnterExitMeth {
         void invoke();
     }
-
-    @FunctionalInterface
+    
     interface StateStayMeth {
         boolean invoke();
     }
