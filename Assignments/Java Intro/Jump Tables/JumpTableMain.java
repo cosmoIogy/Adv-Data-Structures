@@ -339,7 +339,7 @@ public class JumpTableMain {
                 for (int i = 0; i < stack.size(); i++) {
                     sb.append(stack.get(i)).append(",");
                 }
-                Files.writeString(Paths.get(STACK_FILE), sb.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                Files.writeString(Paths.get(STACK_FILE), sb.toString());
             } catch (IOException e) { }
         }
 
@@ -371,11 +371,11 @@ public class JumpTableMain {
                 for (Character c : queue) {
                     sb.append(c).append(",");
                 }
-                Files.writeString(Paths.get(QUEUE_FILE), sb.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                Files.writeString(Paths.get(QUEUE_FILE), sb.toString());
             } catch (IOException e) { }
         }
 
-        // load lsit to file
+        // load list to file
         private void loadListFromFile() {
             list.clear();
             try {
@@ -403,7 +403,7 @@ public class JumpTableMain {
                 for (Character c : list) {
                     sb.append(c).append(",");
                 }
-                Files.writeString(Paths.get(LIST_FILE), sb.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                Files.writeString(Paths.get(LIST_FILE), sb.toString());
             } catch (IOException e) { }
         }
 
