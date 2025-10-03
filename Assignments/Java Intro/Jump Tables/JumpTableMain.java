@@ -19,12 +19,17 @@ public class JumpTableMain {
     }
 
     static class Screen {
+        // jump table for enter methods
         private final HashMap<State, StateEnterExitMeth> stateEnterMeths = new HashMap<>();
+        // jump table for stay methods
         private final HashMap<State, StateStayMeth> stateStayMeths = new HashMap<>();
+        // jump table for exit methods
         private final HashMap<State, StateEnterExitMeth> stateExitMeths = new HashMap<>();
 
+        // track current state
         private State currentState = State.IDLE;
 
+        // javas generic stack, queue, and arraylist
         private final Stack<Character> stack = new Stack<>();
         private final Queue<Character> queue = new LinkedList<>();
         private final ArrayList<Character> list = new ArrayList<>();
@@ -36,22 +41,26 @@ public class JumpTableMain {
         private final Scanner scanner = new Scanner(System.in);
 
         public Screen() {
+            // Assign enter methods
             stateEnterMeths.put(State.IDLE, () -> StateEnterIdle());
             stateEnterMeths.put(State.STACK, () -> StateEnterStack());
             stateEnterMeths.put(State.QUEUE, () -> StateEnterQueue());
             stateEnterMeths.put(State.LIST,  () -> StateEnterList());
 
+            // Assign stay methods
             stateStayMeths.put(State.IDLE, () -> StateStayIdle());
             stateStayMeths.put(State.STACK, () -> StateStayStack());
             stateStayMeths.put(State.QUEUE, () -> StateStayQueue());
             stateStayMeths.put(State.LIST,  () -> StateStayList());
 
+            // Assign exit methods
             stateExitMeths.put(State.IDLE, () -> StateExitIdle());
             stateExitMeths.put(State.STACK, () -> StateExitStack());
             stateExitMeths.put(State.QUEUE, () -> StateExitQueue());
             stateExitMeths.put(State.LIST,  () -> StateExitList());
         }
 
+        // Executes the current state's stay method
         public boolean doState() {
             StateStayMeth stay = stateStayMeths.get(currentState);
             if (stay == null) {
@@ -60,6 +69,7 @@ public class JumpTableMain {
             return stay.invoke();
         }
 
+        // Handles state transitions
         private void changeState(State newState) {
             StateEnterExitMeth exit = stateExitMeths.get(currentState);
             if (exit != null) {
@@ -73,7 +83,7 @@ public class JumpTableMain {
             }
         }
 
-        // ENTER
+        // ENTER methods (load data from file)
         private void StateEnterIdle() { 
 
         }
@@ -87,7 +97,22 @@ public class JumpTableMain {
             loadListFromFile(); 
         }
 
+        // EXIT methods (save data to file)
+        private void StateExitIdle() { 
+
+        }
+        private void StateExitStack() { 
+            saveStackToFile(); 
+        }
+        private void StateExitQueue() { 
+            saveQueueToFile(); 
+        }
+        private void StateExitList()  { 
+            saveListToFile(); 
+        } 
+
         // STAY
+        // Main Menu
         private boolean StateStayIdle() {
             clearScreen();
 
@@ -114,6 +139,7 @@ public class JumpTableMain {
             }
         }
 
+        // Stack menu
         private boolean StateStayStack() {
             clearScreen();
             drawStack();
@@ -156,6 +182,8 @@ public class JumpTableMain {
             }
         }
 
+
+        // queue menu
         private boolean StateStayQueue() {
             clearScreen();
             drawQueue();
@@ -196,6 +224,7 @@ public class JumpTableMain {
             }
         }
 
+        // list menu
         private boolean StateStayList() {
             clearScreen();
             drawList();
@@ -216,10 +245,14 @@ public class JumpTableMain {
 
             switch (opt) { 
                 case "1": 
-                    if (parts.length >= 2) list.add(parts[1].charAt(0)); 
+                    if (parts.length >= 2) {
+                        list.add(parts[1].charAt(0));
+                    }
                     return true; 
                 case "2": 
-                    if (!list.isEmpty()) list.remove(list.size() - 1); 
+                    if (!list.isEmpty()) {
+                        list.remove(list.size() - 1);
+                    }
                     return true; 
                 case "3": changeState(State.STACK); 
                     return true; 
@@ -234,25 +267,11 @@ public class JumpTableMain {
             } 
         }
 
-        // EXIT
-        private void StateExitIdle() { 
-
-        }
-        private void StateExitStack() { 
-            saveStackToFile(); 
-        }
-        private void StateExitQueue() { 
-            saveQueueToFile(); 
-        }
-        private void StateExitList()  { 
-            saveListToFile(); 
-        }
-
+        // method to draw stack
         private void drawStack() {
             if (stack.isEmpty()) {
                 System.out.println("|   |");
                 System.out.println("|---|");
-                System.out.println("Empty stack");
                 return;
             }
 
@@ -264,9 +283,10 @@ public class JumpTableMain {
             }
         }
 
+        // method to draw queue
         private void drawQueue() {
             if (queue.isEmpty()) {
-                System.out.println("Empty queue");
+                System.out.println("| ");
                 return;
             }
 
@@ -279,18 +299,20 @@ public class JumpTableMain {
             System.out.println(sb.toString());
         }
 
+        // method to draw list
         private void drawList() {
             StringBuilder sb = new StringBuilder();
             sb.append("{ ");
 
             for (Character c : list) {
-            sb.append(c).append(", ");
+                sb.append(c).append(", ");
             }
 
             sb.append("}");
             System.out.println(sb.toString());
         }
 
+        // load the stack from file
         private void loadStackFromFile() {
             stack.clear();
             try {
@@ -309,6 +331,7 @@ public class JumpTableMain {
             } catch (IOException e) { }
         }
 
+        // save the stack to file
         private void saveStackToFile() {
             try {
                 StringBuilder sb = new StringBuilder();
@@ -320,6 +343,7 @@ public class JumpTableMain {
             } catch (IOException e) { }
         }
 
+        // load queue from the file
         private void loadQueueFromFile() {
             queue.clear();
 
@@ -339,6 +363,7 @@ public class JumpTableMain {
             } catch (IOException e) { }
         }
 
+        // save queue to file
         private void saveQueueToFile() {
             try {
                 StringBuilder sb = new StringBuilder();
@@ -350,6 +375,7 @@ public class JumpTableMain {
             } catch (IOException e) { }
         }
 
+        // load lsit to file
         private void loadListFromFile() {
             list.clear();
             try {
@@ -368,7 +394,8 @@ public class JumpTableMain {
                 }
             } catch (IOException e) { }
         }
-
+        
+        // save list to file
         private void saveListToFile() {
             try {
                 StringBuilder sb = new StringBuilder();
@@ -380,6 +407,7 @@ public class JumpTableMain {
             } catch (IOException e) { }
         }
 
+        // clear screen method
         private void clearScreen() {
             System.out.print("\033[H\033[2J");
             System.out.flush();
